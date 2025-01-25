@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
+	import type { ActionData } from './$types';
 
-	const login = async (e: Event) => {};
+	export let form: ActionData;
 </script>
 
 <div class="flex items-center justify-center h-screen">
@@ -14,11 +16,11 @@
 			<Card.Description>Enter your email below to login to your account</Card.Description>
 		</Card.Header>
 		<Card.Content>
-			<form on:submit={login}>
+			<form method="post" action="?/login" use:enhance>
 				<div class="grid gap-4">
 					<div class="grid gap-2">
 						<Label for="email">Email</Label>
-						<Input id="email" type="email" placeholder="m@example.com" required />
+						<Input id="email" name="email" type="email" placeholder="m@example.com" required />
 					</div>
 					<div class="grid gap-2">
 						<div class="flex items-center">
@@ -27,8 +29,11 @@
 								Forgot your password?
 							</a>
 						</div>
-						<Input id="password" type="password" required />
+						<Input id="password" name="password" type="password" required />
 					</div>
+					{#if form?.message}
+						<p class="text-red-500 text-sm">{form.message}</p>
+					{/if}
 					<Button type="submit" class="w-full">Login</Button>
 					<Button variant="outline" class="w-full">Login with Google</Button>
 				</div>
